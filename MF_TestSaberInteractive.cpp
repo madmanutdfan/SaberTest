@@ -103,14 +103,18 @@ void List::Deserialize(FILE* file)
     count = 0;
     if (!file) return;
 
-    fscanf(file, "%i", &count);
+    char data[100];
+    count = std::stoi(fgets(data, sizeof(data), file));
+    //fscanf(file, "%i", &count);
     if (count <= 0) return;
 
     std::vector<ListNode*> vListNodes(count);
-    char data[100];
+    
 
     {// head & tail 
-        fscanf(file, "%s", data);
+        //fscanf(file, "%s", data);
+        fgets(data, sizeof(data), file);
+
         tail = new ListNode;
         vListNodes[0] = tail;
 
@@ -118,18 +122,21 @@ void List::Deserialize(FILE* file)
         tail->prev = nullptr;
         tail->next = nullptr;
         tail->data = data;
+        tail->data.pop_back();
     }
 
     for (int i = 1; i < count; ++i) {
-        fscanf(file, "%s", data);
+        //fscanf(file, "%s", data);
+        fgets(data, sizeof(data), file);
 
         tail = new ListNode;
         vListNodes[i] = tail;
-        
+
         tail->prev = vListNodes[i - 1];
         tail->prev->next = tail;
         tail->next = nullptr;
         tail->data = data;
+        tail->data.pop_back();
     }
 
     for (const auto& node : vListNodes) {
