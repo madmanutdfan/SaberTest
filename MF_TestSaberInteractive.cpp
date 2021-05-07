@@ -112,7 +112,7 @@ void List::Deserialize(FILE* file)
     {// head & tail 
         fscanf(file, "%s", data);
         tail = new ListNode;
-        vListNodes.push_back(tail);
+        vListNodes[0] = tail;
 
         head = tail;
         tail->prev = nullptr;
@@ -124,7 +124,7 @@ void List::Deserialize(FILE* file)
         fscanf(file, "%s", data);
 
         tail = new ListNode;
-        vListNodes.push_back(tail);
+        vListNodes[i] = tail;
         
         tail->prev = vListNodes[i - 1];
         tail->prev->next = tail;
@@ -132,7 +132,7 @@ void List::Deserialize(FILE* file)
         tail->data = data;
     }
 
-    for (auto& node : vListNodes) {
+    for (const auto& node : vListNodes) {
         int i;
         fscanf(file, "%i", &i);
         if (i == -1) {
